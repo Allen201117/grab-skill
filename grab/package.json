@@ -1,0 +1,33 @@
+{
+  "name": "grab-skill",
+  "version": "1.1.0",
+  "description": "轻量级网页内容爬取与总结工具 for Claude Code",
+  "type": "module",
+  "main": "scripts/grab.mjs",
+  "bin": {
+    "grab": "scripts/grab.mjs"
+  },
+  "scripts": {
+    "check-env": "node scripts/check-env.mjs",
+    "test": "echo 'Tests not implemented yet' && exit 1"
+  },
+  "keywords": [
+    "web-scraping",
+    "content-extraction",
+    "markdown-generation",
+    "xiaohongshu",
+    "claude-code",
+    "skill"
+  ],
+  "author": "Claude Code User",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthropics/claude-code"
+  }
+}
