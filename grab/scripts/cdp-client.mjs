@@ -100,3 +100,26 @@ export async function waitForPageReady(targetId, timeout = 30000) {
   }
   throw new Error(`页面加载超时（${timeout}ms）`);
 }
+
+/**
+ * 自适应内容就绪检测：轮询直到页面有足够内容，提前退出避免盲等
+ * @returns {boolean} true=内容已就绪，false=超时
+ */
+export async function waitForContentReady(targetId, maxWait = 5000, selectors = []) {
+  const startTime = Date.now();
+  const checkScript = `(() => {
+    const hasSelectors = ${JSON.stringify(selectors)}.some(s => {
+      try { return !!document.querySelector(s); } catch(_) { return false; }
+    });
+    const bodyLen = document.body ? document.body.innerText.length : 0;
+    return hasSelectors || bodyLen > 1500;
+  })()`;
+  while (Date.now() - startTime < maxWait) {
+    try {
+      const ready = await evalScript(targetId, checkScript);
+      if (ready === true) return true;
+    } catch (_) {}
+    await new Promise(r => setTimeout(r, 400));
+  }
+  return false;
+}
