@@ -108,8 +108,9 @@ async function main() {
       // SPA 需要额外等待 JS 渲染 feed 内容
       if (parsed.isSPA) {
         const spaWait = spaDetector.getSPAConfig(platform)?.minWaitTime || 3000;
-        log(`⏳ SPA 等待渲染 (${spaWait}ms)...`, parsed.verbose);
-        await sleep(spaWait);
+        const readySelectors = spaDetector.getSPAConfig(platform)?.detectSelectors || [];
+        log(`⏳ SPA 等待渲染（最多 ${spaWait}ms，内容就绪则提前退出）...`, parsed.verbose);
+        await cdpClient.waitForContentReady(targetId, spaWait, readySelectors);
       }
       log(`✅ 页面加载完成`, parsed.verbose);
 
